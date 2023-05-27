@@ -7,7 +7,7 @@
 
 Foi solicitado um projeto de sensor analógico/digital em microcontrolador utilizando comunicação serial UART.
 
-Consulte **[Implantação](#-implanta%C3%A7%C3%A3o)** para saber como implantar o projeto.
+Consulte **[Implantação](#-implanta%aC3%A7%C3%A3o)** para saber como implantar o projeto.
 
 ### 📋 Requisitos
 O sistema a ser implementado no SBC deverá atender aos seguintes requisitos:
@@ -63,7 +63,7 @@ Para entender melhor a relação entre as entidades, foi desenvolvido o seguinte
 
 ![alt text](Recursos/DiagramaDeRelação.png)
 
-Para que toda essa comunicação fosse feita, foi necessário criar uam variável chamada 'dado' para receber determinados valores, ele ia até a NodeMC através de uma comunicação serial UART ele ia até a NodeMCU carregando uma espécie de chave que era responsável por manipular a condição dos if e else presentes na Node e enviar o dado solicitado.
+Para que toda essa comunicação fosse feita, foi necessário criar uma variável chamada 'dado' para receber determinados valores e serem enviados para a NodeMC através de uma comunicação serial UART para servir como uma espécie de chave responsável por manipular a condição dos if e else presentes na Node responsável por enviar o dado solicitado.
 
  ```
 254 -> Exibe:  D0
@@ -71,7 +71,7 @@ Para que toda essa comunicação fosse feita, foi necessário criar uam variáve
 155 -> Acende: Led
 100 -> Exibe:  Analógico
 ```
-A Uart tem três diretrizes S0, S1 e S3, nesse projeto definimos a porta serial uart como sendo a S3
+A Uart tem três interfaces/portas, a S0, S1 e S3, nesse projeto definimos a porta serial uart como sendo a S3.
 
 ``` #define PORTA_SERIAL_UART "/dev/ttyS3" ```
 
@@ -89,7 +89,7 @@ Foi utilizado as seguintes  variaveis globais:
 
 O valor do dado analógico teve que ser dividido em partes para ser enviado da Node pra a Orange, pois esse dado é muito grande para ser mandado tudo de uma vez, sendo assim, foi salvo 8 bits em uma variável, em seguida movemos 8 para direita e salvamos novamente, garantindo que todos possam ser enviados.
 
-Já no lado da Orange, pra que ele possa ser exibido foi usado deslocamento lógico à esquerda, uma operação bit a bit que desloca todos os bits de um valor para a esquerda, colocando esse calor já somado em 'valor Analógico'.
+Já no lado da Orange, pra que ele possa ser exibido, foi usado deslocamento lógico à esquerda, uma operação bit a bit que desloca todos os bits de um valor para a esquerda, colocando esse valor já somado em 'valor Analógico'.
 
 `valorAnalogico = (d[2] << 16) + (d[1] << 8) + d[0]; 
 `
@@ -106,7 +106,7 @@ Como resultado, obtivemos o número binário 10010000 (144 em decimal), que é e
 
 Em linguagens de programação, o operador de deslocamento lógico à esquerda geralmente é representado por <<. Por exemplo, em C, podemos usar o operador << da seguinte como mostrado na linha de código acima.
 
-Para fazer o menu foi usado  "enum" que é um conjunto de valores inteiros representados por identificadores. Dentro desses menus são chamadas as funções para apresentar os valores dos dados lidos.
+Para fazer o menu, foi usado  "enum" que é um conjunto de valores inteiros representados por identificadores. Dentro desses menus são chamadas as funções para apresentar os valores dos dados lidos.
 
 ```enum OpcaoMenu { SelecionarNode, DadosAnalogicos, DadosDigitais, LigarLed };```
 
@@ -114,8 +114,8 @@ Para fazer o menu foi usado  "enum" que é um conjunto de valores inteiros repre
 
 ![alt text](Recursos/UART.png)
 
-A maioria dos circuitos de comunicação serial utiliza um transceptor conhecido como UART (Universal Asynchronous Receiver/Transmitter)[1]
-O termo universal refere-se ao fato do formato do dado e velocidade serem configuráveis. Os níveis elétricos são delegados a circuitos especiais externos e não fazem parte da especificação da UART. 
+A maioria dos circuitos de comunicação serial utiliza um transceptor conhecido como **UART **(*Universal Asynchronous Receiver/Transmitter*) [1]
+O termo universal refere-se ao fato do formato do dado e velocidade serem configuráveis. Os níveis elétricos são delegados a circuitos especiais externos e não fazem parte da especificação da **UART.** 
 
 Na interface de comunicação serial, somente um bit de informação é transmitido/recebido por vez. Como os dados geralmente são processados em paralelo (por um microprocessador, por exemplo), há a necessidade de convertê-los em uma sequência de bits.
 
@@ -123,9 +123,9 @@ Na interface de comunicação serial, somente um bit de informação é transmit
 
 ![alt text](Recursos/img/orangepipc.jpg)
 
-A **Orange Pi PC Plus** [2] é uma placa de computador de placa única (SBC) desenvolvida pela Xunlong Software, baseada na arquitetura ARM. Ela é projetada como uma alternativa de baixo custo para outras placas populares, como a Raspberry Pi.
+A **Orange Pi PC Plus** [2] é uma placa de computador (SBC) desenvolvida pela Xunlong Software, baseada na arquitetura *ARM.* Ela é projetada como uma alternativa de baixo custo para outras placas populares, como a *Raspberry Pi*.
 
-A Orange Pi PC Plus possui um processador quad-core Allwinner H3, com núcleos Cortex-A7, operando a uma frequência de até 1,6 GHz.
+A **Orange Pi PC Plus** possui um processador quad-core *Allwinner H3*, com núcleos Cortex-A7, operando a uma frequência de até 1,6 GHz.
 
 ## 📄 NodeMCU ESP8266EX
 
