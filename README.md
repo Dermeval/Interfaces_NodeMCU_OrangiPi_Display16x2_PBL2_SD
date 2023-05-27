@@ -108,6 +108,8 @@ Em linguagens de programação, o operador de deslocamento lógico à esquerda g
 
 Para fazer o menu foi usado  "enum" que é um conjunto de valores inteiros representados por identificadores. Dentro desses menus são chamadas as funções para apresentar os valores dos dados lidos.
 
+```enum OpcaoMenu { SelecionarNode, DadosAnalogicos, DadosDigitais, LigarLed };```
+
 ## 📄 Comunicação UART
 
 ![alt text](Recursos/UART.png)
