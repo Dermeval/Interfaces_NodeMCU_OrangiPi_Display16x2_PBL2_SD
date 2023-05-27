@@ -158,8 +158,13 @@ A biblioteca fornece funções convenientes para enviar comandos e dados para o 
 ## ⚙️ Executando os testes
 Foram feitos vários testes para saber se o nosso projeto estava de fato funcionando corretamente. No momento em que as informações não apareciam adaquedamente no menu do display, foi usado exibição no console para checar as saídas do programa.
 A parte que mais reteve tempo foi a do submenus devido a alguns pequenos erros de lógica que não exibia os subMenus.
-Após tirar os submenus do Switch Case e colocar direto dentro da função que a chamava.
+Após tirar os submenus do Switch Case e colocar direto dentro da função que a chamava esses erros pararam de existir.
 
+Todavia, a lógica seguida naquela versão só permitia pegar um único sensor, ou o D0 ou o D1. Percebendo isso, a lógico foi alterada novamente e foi adicionado a variavél dado para servir como chave pra selecionar qual condição seria executada através do if else.
+
+Os valores dos sensores tanto analogico quanto digitais foram devidamente conferidos. A principio o analógico havia mostrado um número inesperado por estar sendo mandado tudo de uma só vez, mas ao dividir os dados, e enviar por partes, esse problema resolveu.
+
+Um outro problema que apareceu bastante foi as informações que não pareciam no display,  na verdade apareciam tão rápido que mal dava para ver. Para resolver esse problema foi adicionado um delay após a exibição das informações. Alguns delays também foram acrescentados para sincronizar as solicitações e o envio para o display.
 
 ### 🔩 Melhorias
 
