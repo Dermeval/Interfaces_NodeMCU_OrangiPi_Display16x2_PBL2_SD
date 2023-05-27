@@ -59,23 +59,50 @@ Foi utilizada a [IDE Arduíno](https://www.arduino.cc/en/software "IDE Arduíno"
 
 O código foi desenvolvido na ** linguagem C** e permite a placa ** Orange Pi** se comunicar através de uma comunicação serial **UART** com a placa **Node MCU**, onde é possível que a nossa SBC **Orange Pi** solicite para a **Node** o envio de dados do dois sensores digitais e um dado analógico medido por um potênciometro e exibir no **display 16x2** da **Orange** todas as informações, organizadas por um menu, além de também poder ligar o **LED da Node**.
 
+Para entender melhor a relação entre as entidades, foi desenvolvido o seguinte diagrama:
+
 ![alt text](Recursos/DiagramaDeRelação.png)
 
-Para entender melhor a relação entre as entidades, foi desenvolvido o seguinte diagrama:
+Para que toda essa comunicação fosse feita, foi necessário criar uam variável chamada 'dado' para receber determinados valores, ele ia até a NodeMC através de uma comunicação serial UART ele ia até a NodeMCU carregando uma espécie de chave que era responsável por manipular a condição dos if e else presentes na Node e enviar o dado solicitado.
+
+ ```
+	254 -> Exibe:  D0
+        255 -> Exibe:  D1
+        155 -> Acende: Led
+        100 -> Exibe:  Analógico
+```
+Foi utilizado as seguintes  variaveis globais:
+
+
+| Variável  |  Descrição |
+| ------------ | ------------ |
+| lcd  |  Variável para armazenar o identificador do display LCD. |
+|  uartfd | Variável para armazenar o identificador da porta serial UART |
+| dadoRecebido   | Variável para armazenar o dado recebido via comunicação serial.  |
+| dado  | Variável para armazenar o dado a ser enviado via comunicação serial.  |
+|  valorAnalogico |  Variável para armazenar o valor analógico lido do sensor.  |
+| d[4]  |  Vetor de caracteres para armazenar os dados recebidos via comunicação serial. |
+
+O valor do dado analógico teve que ser dividido em partes para ser enviado da Node pra a Orange, pois esse dado é muito grande para ser mandado tudo de uma vez, sendo assim, foi salvo 8 bytes em uma variável, em seguida movemos 8 para direita e salvamos novamente, garantindo que todos possam ser enviados.
+
+Já no lado da Orange, pra que ele possa ser exibido foi usado deslocamento lógico à esquerda, uma operação bit a bit que desloca todos os bits de um valor para a esquerda, colocando esse calor já somado em 'valor Analogico'.
+`valorAnalogico = (d[2] << 16) + (d[1] << 8) + d[0]; 
+`
 
 ## 📄 Comunicação UART
 
 ![alt text](Recursos/UART.png)
 
-A maioria dos circuitos de comunicação serial utiliza um transceptor conhecido como UART (Universal Asynchronous Receiver/Transmitter)
+A maioria dos circuitos de comunicação serial utiliza um transceptor conhecido como UART (Universal Asynchronous Receiver/Transmitter)[1]
 O termo universal refere-se ao fato do formato do dado e velocidade serem configuráveis. Os níveis elétricos são delegados a circuitos especiais externos e não fazem parte da especificação da UART. 
+
 Na interface de comunicação serial, somente um bit de informação é transmitido/recebido por vez. Como os dados geralmente são processados em paralelo (por um microprocessador, por exemplo), há a necessidade de convertê-los em uma sequência de bits.
 
 ## 📄 SBC - Orange Pi PC Plus
 
 ![alt text](Recursos/img/orangepipc.jpg)
 
-A **Orange Pi PC Plus** é uma placa de computador de placa única (SBC) desenvolvida pela Xunlong Software, baseada na arquitetura ARM. Ela é projetada como uma alternativa de baixo custo para outras placas populares, como a Raspberry Pi.
+A **Orange Pi PC Plus** [2] é uma placa de computador de placa única (SBC) desenvolvida pela Xunlong Software, baseada na arquitetura ARM. Ela é projetada como uma alternativa de baixo custo para outras placas populares, como a Raspberry Pi.
 
 A Orange Pi PC Plus possui um processador quad-core Allwinner H3, com núcleos Cortex-A7, operando a uma frequência de até 1,6 GHz.
 
@@ -83,12 +110,11 @@ A Orange Pi PC Plus possui um processador quad-core Allwinner H3, com núcleos C
 
 ![alt text](Recursos/img/NodeMcu8266.jpg)
 
-O **NodeMCU ESP8266EX**[[1]][Node] é uma placa de desenvolvimento baseada no chip ESP8266EX da Espressif Systems. Ele oferece conectividade Wi-Fi e tem um microcontrolador integrado que pode ser programado usando a linguagem Lua, por exemplo. É uma escolha popular para projetos de IoT e automação residencial.
+O **NodeMCU ESP8266EX** [3] é uma placa de desenvolvimento baseada no chip ESP8266EX da Espressif Systems. Ele oferece conectividade Wi-Fi e tem um microcontrolador integrado que pode ser programado usando a linguagem Lua, por exemplo. É uma escolha popular para projetos de IoT e automação residencial.
 
 ## 📄 Display LCD 16X2
 
 ![alt text](Recursos/img/display16x2verde.jpg)
-
 
 O **Display LCD 16x2** é um dispositivo de saída muito comum e amplamente utilizado em projetos eletrônicos. Ele consiste em uma matriz de **16** colunas e **2** linhas de caracteres alfanuméricos, permitindo a exibição de até 32 caracteres.
 
@@ -122,10 +148,6 @@ Em uma nov versão também poderíamos colcaor a opção de pagar o LED. Segue  
 
 ### ⌨️ 
 
-```
-Dar exemplos
-```
-
 ## 📦 Implantação
 
 Para executar o progrmama é preciso ter acesso a um terminal e acessar a Orange Pi PC Plus. Uma vez acessadda, você cria um diretório na placa, cria um código usando o comando "nano main.c" e salve na placa. Para compilar seu código, use o seguinte comando:
@@ -135,7 +157,7 @@ gcc -o main main.c -lwiringPi -lcrypt -lm -lwiringPiDev
 Dessa forma ele reconhece as bibliotecas inseridas e compila o programa em C. Depois disso é só digitar sudo ./main para rodar o código.
 Vale lembrar que para você executar um programa na Orange Pi. você precisa carregar antes o código presente na Node MCU e só depois executar na Orange Pi. 
 
-## 🛠️ Construído com
+## 🛠️ Bibliotecas
 
 Essas são as bibliotecas usadas no projeto
 |  Biblioteca  |  Descrição |  Exempo de argumentos |
