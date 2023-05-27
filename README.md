@@ -57,13 +57,19 @@ Foi utilizada a [IDE Arduíno](https://www.arduino.cc/en/software "IDE Arduíno"
 
 ## ⚙️ Metodologia
 
-O código foi desenvolvido na** linguagem C** e permite a placa** Orange Pi** se comunicar através de uma comunicação serial **UART** com a placa **Node MCU**, onde é possível que a nossa SBC **Orange Pi** solicite para a **Node** o envio de dados do dois sensores digitais e um dado analógico medido por um potênciometro e exibir no **display 16x2** da **Orange** todas as informações, organizadas por um menu, além de também poder ligar o **LED da Node**.
+O código foi desenvolvido na ** linguagem C** e permite a placa ** Orange Pi** se comunicar através de uma comunicação serial **UART** com a placa **Node MCU**, onde é possível que a nossa SBC **Orange Pi** solicite para a **Node** o envio de dados do dois sensores digitais e um dado analógico medido por um potênciometro e exibir no **display 16x2** da **Orange** todas as informações, organizadas por um menu, além de também poder ligar o **LED da Node**.
 
-![alt text](Recursos/Diagrama de relação.png)
+![alt text](Recursos/DiagramaDeRelação.png)
 
 Para entender melhor a relação entre as entidades, foi desenvolvido o seguinte diagrama:
 
 ## 📄 Comunicação UART
+
+![alt text](Recursos/UART.png)
+
+A maioria dos circuitos de comunicação serial utiliza um transceptor conhecido como UART (Universal Asynchronous Receiver/Transmitter)
+O termo universal refere-se ao fato do formato do dado e velocidade serem configuráveis. Os níveis elétricos são delegados a circuitos especiais externos e não fazem parte da especificação da UART. 
+Na interface de comunicação serial, somente um bit de informação é transmitido/recebido por vez. Como os dados geralmente são processados em paralelo (por um microprocessador, por exemplo), há a necessidade de convertê-los em uma sequência de bits.
 
 ## 📄 SBC - Orange Pi PC Plus
 
@@ -82,6 +88,7 @@ O **NodeMCU ESP8266EX**[[1]][Node] é uma placa de desenvolvimento baseada no ch
 ## 📄 Display LCD 16X2
 
 ![alt text](Recursos/img/display16x2verde.jpg)
+
 
 O **Display LCD 16x2** é um dispositivo de saída muito comum e amplamente utilizado em projetos eletrônicos. Ele consiste em uma matriz de **16** colunas e **2** linhas de caracteres alfanuméricos, permitindo a exibição de até 32 caracteres.
 
