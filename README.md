@@ -73,7 +73,7 @@ Para que toda essa comunicação fosse feita, foi necessário criar uam variáve
 ```
 A Uart tem três diretrizes S0, S1 e S3, nesse projeto definimos a porta serial uart como sendo a S3
 
-``` #define TA_SERIAL_UART "/dev/ttyS3" ```
+``` #define PORTA_SERIAL_UART "/dev/ttyS3" ```
 
 Foi utilizado as seguintes  variaveis globais:
 
@@ -93,6 +93,7 @@ Já no lado da Orange, pra que ele possa ser exibido foi usado deslocamento lóg
 
 `valorAnalogico = (d[2] << 16) + (d[1] << 8) + d[0]; 
 `
+
 Na operação de deslocamento lógico à esquerda, os bits são deslocados para a esquerda e zeros são inseridos nos bits menos significativos. O bit mais à esquerda é descartado, e um novo bit zero é colocado no bit mais à direita.
 
 Por exemplo, vamos considerar o número binário de 8 bits 10100100 (164 em decimal). Se aplicarmos um deslocamento lógico à esquerda de 2 posições, teremos:
