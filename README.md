@@ -116,13 +116,9 @@ Após tirar os submenus do Switch Case e colocar direto dentro da função que a
 
 ### 🔩 Melhorias
 
-Nosso projeto não foi totalmente concluído, da forma em que está hoje, ele não se comunica com as 32 NodeMCU como solicitado, apenas com uma.
+Apesar de todo o projeto conseguir ler todos os sensores e enviar corretamente as informações, um dos requisitos não foi atendido que seria fazer todo esse processo para mais de uma placa Node MCU, 32 ao total. Nosso projeto no momento apenas está manipulando uma Node MCU.
 
-O menu também pode melhorar mais, colocando todos os menus e submenus em switch Case para otimizar mais 
-
-```
-Dar exemplos
-```
+Em uma nov versão também poderíamos colcaor a opção de pagar o LED. Segue  a mesma lógica de acender porém com o valor do pino do LED invertido.
 
 ### ⌨️ 
 
@@ -133,9 +129,9 @@ Dar exemplos
 ## 📦 Implantação
 
 Para executar o progrmama é preciso ter acesso a um terminal e acessar a Orange Pi PC Plus. Uma vez acessadda, você cria um diretório na placa, cria um código usando o comando "nano main.c" e salve na placa. Para compilar seu código, use o seguinte comando:
-
+```
 gcc -o main main.c -lwiringPi -lcrypt -lm -lwiringPiDev
-
+```
 Dessa forma ele reconhece as bibliotecas inseridas e compila o programa em C. Depois disso é só digitar sudo ./main para rodar o código.
 Vale lembrar que para você executar um programa na Orange Pi. você precisa carregar antes o código presente na Node MCU e só depois executar na Orange Pi. 
 
@@ -152,8 +148,21 @@ Essas são as bibliotecas usadas no projeto
 
 ## Resultados
 
+Foi possível colocar os menus em um Swith Case, onde eles pudessem exibir o menu completa das funcionalidades. O primeiro menu é "Selecionar Node", todavia nesse projeto estamos trabalhando apenas com uma Node MCU, portanto não iremos selecionar uma outra a não ser a que já estamos trabalhando. 
 
-## 🖇️ Colaborando
+O segundo menu temos os Dados Digitais, onde são exibidos os valores do sensor de D0 e D1. Assim que D0 ou D1 são pressionados na Node MCU, os sensores retornam  '0' para Orange e a Orange exibe esse valor no display, quando liberados, retornam 1.
+
+![alt text](Recursos/img/dados.gif)
+
+O LED da Node MCU é acendido assim que o menu "Ligar Led" for selecionado. Infelizmente nessa versão do código, apenas acendemos o LED e não apagamos. Mas a lógica segue sendo a mesma, é só inverter o sinal da pinagem ligada ao LED.
+
+![alt text](Recursos/img/placa2.gif)
+
+O dado do sensor analógico é requisitado pela Orange através do código 155, a NodeMCU então envia o dado com os bits divididos, e a Orange ao receber esses dados, os somam e os exibem no display. Cada vez que você vai mudando o potênciometro, os dados vão alterando também, assim que você solicitar pra ver os dados do sensor analógico, ele o exibirá.
+
+![alt text](Recursos/img/analogico.gif)
+
+Com isso podemos concluir que a comunicação UART está enviando e recebendo dados corretamnte de todos os sensores e exibindo corretamente seus menus, do quao são manipulados via botão. Dessa forma conseguimos assim compreender e executar a programação de dispositivos microcontroladores e assimilar conceitos básicos sobre protocolos de comunicação serial.
 
 ## ✒️ Autor
 
@@ -166,3 +175,6 @@ Engenharia de Computação
 
 
 ## 📄 Referências:
+[1] Orangi Pi - Disponível em: <http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-PC-Plus.html> ;Acesso 26 de maio 2023
+[2] Uarte - Disponível em <https://www.rohde-schwarz.com/br/produtos/teste-e-medicao/essentials-test-equipment/digital-oscilloscopes/compreender-uart_254524.html#:~:text=O%20que%20%C3%A9%20o%20UART,dados%20seriais%20entre%20dois%20dispositivos.> ;  ;Acesso 26 de maio 2023
+[3] NodeMCU - Disponível em <https://nodemcu.readthedocs.io/en/release/>; Acesso 26 de amio de 2023
