@@ -66,10 +66,10 @@ Para entender melhor a relação entre as entidades, foi desenvolvido o seguinte
 Para que toda essa comunicação fosse feita, foi necessário criar uam variável chamada 'dado' para receber determinados valores, ele ia até a NodeMC através de uma comunicação serial UART ele ia até a NodeMCU carregando uma espécie de chave que era responsável por manipular a condição dos if e else presentes na Node e enviar o dado solicitado.
 
  ```
-	254 -> Exibe:  D0
-        255 -> Exibe:  D1
-        155 -> Acende: Led
-        100 -> Exibe:  Analógico
+254 -> Exibe:  D0
+255 -> Exibe:  D1
+155 -> Acende: Led
+100 -> Exibe:  Analógico
 ```
 Foi utilizado as seguintes  variaveis globais:
 
@@ -78,16 +78,30 @@ Foi utilizado as seguintes  variaveis globais:
 | ------------ | ------------ |
 | lcd  |  Variável para armazenar o identificador do display LCD. |
 |  uartfd | Variável para armazenar o identificador da porta serial UART |
-| dadoRecebido   | Variável para armazenar o dado recebido via comunicação serial.  |
+| dadoRecebido   | Variável para armazenar o dado recebido via comunicação serial.|
 | dado  | Variável para armazenar o dado a ser enviado via comunicação serial.  |
 |  valorAnalogico |  Variável para armazenar o valor analógico lido do sensor.  |
 | d[4]  |  Vetor de caracteres para armazenar os dados recebidos via comunicação serial. |
 
-O valor do dado analógico teve que ser dividido em partes para ser enviado da Node pra a Orange, pois esse dado é muito grande para ser mandado tudo de uma vez, sendo assim, foi salvo 8 bytes em uma variável, em seguida movemos 8 para direita e salvamos novamente, garantindo que todos possam ser enviados.
+O valor do dado analógico teve que ser dividido em partes para ser enviado da Node pra a Orange, pois esse dado é muito grande para ser mandado tudo de uma vez, sendo assim, foi salvo 8 bits em uma variável, em seguida movemos 8 para direita e salvamos novamente, garantindo que todos possam ser enviados.
 
 Já no lado da Orange, pra que ele possa ser exibido foi usado deslocamento lógico à esquerda, uma operação bit a bit que desloca todos os bits de um valor para a esquerda, colocando esse calor já somado em 'valor Analogico'.
+
 `valorAnalogico = (d[2] << 16) + (d[1] << 8) + d[0]; 
 `
+Na operação de deslocamento lógico à esquerda, os bits são deslocados para a esquerda e zeros são inseridos nos bits menos significativos. O bit mais à esquerda é descartado, e um novo bit zero é colocado no bit mais à direita.
+
+Por exemplo, vamos considerar o número binário de 8 bits 10100100 (164 em decimal). Se aplicarmos um deslocamento lógico à esquerda de 2 posições, teremos:
+
+10100100 << 2
+
+Resultado: 10010000
+
+Como resultado, obtivemos o número binário 10010000 (144 em decimal), que é equivalente a multiplicar o número original por 2 elevado a 2 (ou seja, multiplicar por 4).
+
+Em linguagens de programação, o operador de deslocamento lógico à esquerda geralmente é representado por <<. Por exemplo, em C, podemos usar o operador << da seguinte como mostrado na linha de código acima.
+
+Para fazer o menu foi usado  "enum" que é um conjunto de valores inteiros representados por identificadores. Dentro desses menus são chamadas as funções para apresentar os valores dos dados lidos.
 
 ## 📄 Comunicação UART
 
@@ -146,8 +160,6 @@ Apesar de todo o projeto conseguir ler todos os sensores e enviar corretamente a
 
 Em uma nov versão também poderíamos colcaor a opção de pagar o LED. Segue  a mesma lógica de acender porém com o valor do pino do LED invertido.
 
-### ⌨️ 
-
 ## 📦 Implantação
 
 Para executar o progrmama é preciso ter acesso a um terminal e acessar a Orange Pi PC Plus. Uma vez acessadda, você cria um diretório na placa, cria um código usando o comando "nano main.c" e salve na placa. Para compilar seu código, use o seguinte comando:
@@ -160,13 +172,14 @@ Vale lembrar que para você executar um programa na Orange Pi. você precisa car
 ## 🛠️ Bibliotecas
 
 Essas são as bibliotecas usadas no projeto
-|  Biblioteca  |  Descrição |  Exempo de argumentos |
-| ------------ | ------------ | ------------ |
-|  <wiringPi.h> | Biblioteca para manipular a GPIO  |   |
-| <lcd.h>  | Biblioteca para controlar o display LCD. |   |
-| <stdio.h>  |  Biblioteca padrão de entrada e saída. |   |
-|  <errno.h> | Biblioteca para tratamento de erros  |   |
-|  <string.h> |  Biblioteca para manipulação de strings. |   |
+|  Biblioteca  |  Descrição |  
+| ------------ | ------------ | 
+|  <wiringPi.h> | Biblioteca para manipular a GPIO  | 
+|<wiringSerial.h>| Permite a comunicação serial fornecida pela biblioteca WiringPi | 
+| <lcd.h>  | Biblioteca para controlar o display LCD. |   
+| <stdio.h>  |  Biblioteca padrão de entrada e saída. |   
+|  <errno.h> | Biblioteca para tratamento de erros  |   
+|  <string.h> |  Biblioteca para manipulação de strings. |  
 
 ## Resultados
 
@@ -184,6 +197,7 @@ O dado do sensor analógico é requisitado pela Orange através do código 155, 
 
 ![alt text](Recursos/img/analogico.gif)
 
+### ⌨️ Conclusão
 Com isso podemos concluir que a comunicação UART está enviando e recebendo dados corretamnte de todos os sensores e exibindo corretamente seus menus, do quao são manipulados via botão. Dessa forma conseguimos assim compreender e executar a programação de dispositivos microcontroladores e assimilar conceitos básicos sobre protocolos de comunicação serial.
 
 ## ✒️ Autor
@@ -198,5 +212,7 @@ Engenharia de Computação
 
 ## 📄 Referências:
 [1] Orangi Pi - Disponível em: <http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-PC-Plus.html> ;Acesso 26 de maio 2023
-[2] Uarte - Disponível em <https://www.rohde-schwarz.com/br/produtos/teste-e-medicao/essentials-test-equipment/digital-oscilloscopes/compreender-uart_254524.html#:~:text=O%20que%20%C3%A9%20o%20UART,dados%20seriais%20entre%20dois%20dispositivos.> ;  ;Acesso 26 de maio 2023
-[3] NodeMCU - Disponível em <https://nodemcu.readthedocs.io/en/release/>; Acesso 26 de amio de 2023
+
+[2] Uarte - Disponível em <https://www.rohde-schwarz.com/br/produtos/teste-e-medicao/essentials-test-equipment/digital-oscilloscopes/compreender-uart_254524.html#:~:text=O%20que%20%C3%A9%20o%20UART,dados%20seriais%20entre%20dois%20dispositivos.> ;Acesso 26 de maio 2023
+
+[3] NodeMCU - Disponível em <https://nodemcu.readthedocs.io/en/release/>; Acesso 26 de maio de 2023
