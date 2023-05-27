@@ -51,13 +51,13 @@ Além disso:
 ```
 ### 🔧 Instalação
 
-É necessário ter a [biblioteca WiringPi](http://wiringpi.com/download-and-install/ "biblioteca WiringiPi") devidamente instalada na sua Orange Pi
-Foi utilizada a [IDE Sublime txt](https://www.sublimetext.com/3 "IDE Sublime txt") para programar a OrangePi PC Plus
-Foi utilizada a [IDE Arduíno](https://www.arduino.cc/en/software "IDE Arduíno") para programar a Node MCU
+É necessário ter a [biblioteca WiringPi](http://wiringpi.com/download-and-install/ "biblioteca WiringiPi") devidamente instalada na sua Orange Pi.
+Foi utilizada a [IDE Sublime txt](https://www.sublimetext.com/3 "IDE Sublime txt") para programar a OrangePi PC Plus.
+Foi utilizada a [IDE Arduíno](https://www.arduino.cc/en/software "IDE Arduíno") para programar a Node MCU.
 
 ## ⚙️ Metodologia
 
-O código foi desenvolvido na ** linguagem C** e permite a placa ** Orange Pi** se comunicar através de uma comunicação serial **UART** com a placa **Node MCU**, onde é possível que a nossa SBC **Orange Pi** solicite para a **Node** o envio de dados do dois sensores digitais e um dado analógico medido por um potênciometro e exibir no **display 16x2** da **Orange** todas as informações, organizadas por um menu, além de também poder ligar o **LED da Node**.
+O código foi desenvolvido na **linguagem C** e permite a placa **Orange Pi** se comunicar através de uma comunicação serial **UART** com a placa **Node MCU**, onde é possível que a nossa SBC **Orange Pi** solicite para a **Node** o envio de dados do dois sensores digitais e um dado analógico medido por um potênciometro e exibir no **display 16x2** da **Orange** todas as informações, organizadas por um menu, além de também poder ligar o **LED da Node**.
 
 Para entender melhor a relação entre as entidades, foi desenvolvido o seguinte diagrama:
 
@@ -71,6 +71,10 @@ Para que toda essa comunicação fosse feita, foi necessário criar uam variáve
 155 -> Acende: Led
 100 -> Exibe:  Analógico
 ```
+A Uart tem três diretrizes S0, S1 e S3, nesse projeto definimos a porta serial uart como sendo a S3
+
+``` #define TA_SERIAL_UART "/dev/ttyS3" ```
+
 Foi utilizado as seguintes  variaveis globais:
 
 
@@ -85,7 +89,7 @@ Foi utilizado as seguintes  variaveis globais:
 
 O valor do dado analógico teve que ser dividido em partes para ser enviado da Node pra a Orange, pois esse dado é muito grande para ser mandado tudo de uma vez, sendo assim, foi salvo 8 bits em uma variável, em seguida movemos 8 para direita e salvamos novamente, garantindo que todos possam ser enviados.
 
-Já no lado da Orange, pra que ele possa ser exibido foi usado deslocamento lógico à esquerda, uma operação bit a bit que desloca todos os bits de um valor para a esquerda, colocando esse calor já somado em 'valor Analogico'.
+Já no lado da Orange, pra que ele possa ser exibido foi usado deslocamento lógico à esquerda, uma operação bit a bit que desloca todos os bits de um valor para a esquerda, colocando esse calor já somado em 'valor Analógico'.
 
 `valorAnalogico = (d[2] << 16) + (d[1] << 8) + d[0]; 
 `
