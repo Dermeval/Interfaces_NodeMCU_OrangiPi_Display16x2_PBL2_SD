@@ -5,14 +5,31 @@
 
 ## 🚀 introdução
 
-Foi solicitado um protótipo de um sistema IoT escrito na linguagem C usando o protocolo de comunicação MQTT onde o sistema mantém a IHM local com interface baseada em display LCD, botões e chaves, e uma outra IHM em forma de uma aplicação Desketop ou Android.
+Foi solicitado um projeto de sensor analógico/digital em microcontrolador utilizando comunicação serial UART.
 
 Consulte **[Implantação](#-implanta%aC3%A7%C3%A3o)** para saber como implantar o projeto.
 
 ### 📋 Requisitos
+O sistema a ser implementado no SBC deverá atender aos seguintes requisitos:
+```
+- O código deverá ser escrito em linguagem C; 
+- Capacidade de interligação com até 32 unidades de sensoriamento;
+- Mecanismo de controle de status de funcionamento das unidades;
+- Apenas o SBC será capaz de iniciar uma comunicação.
+```
+O protótipo a ser implementado na NodeMCU deverá atender às seguintes restrições:
+```
+- O código deverá ser escrito em linguagem C;
+- Deverá ser capaz de ler e interpretar comandos oriundos do SBC.
+```
+Além disso:
+```
+- Os comandos serão compostos por palavras de 8 bits;
+- A informação medida deve ter a maior precisão possível;
+- As requisições do SBC podem ser direcionadas para uma unidade específica ou a todas;
+- As solicitações e as respostas deverão ser exibidas no display LCD.
 
-Escreva os Requisitos
-
+```
 ### 📋 Recursos Utilizados
 
 [Solicitação do Projeto](https://github.com/Dermeval/Interfaces_NodeMCU_OrangiPi_Display16x2_PBL2_SD/blob/main/Recursos/Solicita%C3%A7%C3%A3o%20do%20Projeto%20Probl2.pdf "Solicitação do Projeto")
